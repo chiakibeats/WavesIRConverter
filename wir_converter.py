@@ -108,11 +108,15 @@ def parse_xps(file_name, normalize):
             print("Done!")
 
             if normalize == "preset":
-                norm_factor = float(variation.find(".//Descriptor[@Name='Norm']").text)
                 print("Normalize Gain (Preset Based)...")
-                print(f"Normalize Factor: {norm_factor}")
-                normalize_ir(output_file, norm_factor)
-                print("Done!")
+                norm_element = variation.find(".//Descriptor[@Name='Norm']")
+                if norm_element != None:
+                    norm_factor = float(norm_element.text)
+                    print(f"Normalize Factor: {norm_factor}")
+                    normalize_ir(output_file, norm_factor)
+                    print("Done!")
+                else:
+                    print("Counldn't find normalize data!")
             elif normalize == "sample":
                 print("Normalize Gain (Sample Based)...")
                 normalize_ir(output_file)
